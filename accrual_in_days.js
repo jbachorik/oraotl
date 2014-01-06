@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name       OTL Accrual Balance in Days
 // @namespace  https://github.com/jbachorik/oraotl
-// @version    0.2
+// @version    0.3
 // @description  Compute OTL Accrual Balance in Days
 // @match      https://global-ebusiness.oraclecorp.com/*
 // @copyright  2012+, You
@@ -22,9 +22,13 @@ function calcAccrualDaysOverview() {
 
 function calcAccrualDaysDetail() {
     var xpath = [
-        "//td[@class='x1n x50']/span[@class='x6']",
-        "//td[@class='x1y x4m']/span[@class='x1y']"
-    ].join("|")
+        "//span[@title='Accrual Balance']",
+        "//span[@title='Time-off Taken']",
+        "//span[@title='Carry Over']",
+        "//span[@title='Current Accrual']",
+        "//span[@title='Time Entitlement']",
+        "//span[@title='Time Adjustment']"
+    ].join('|')
         
     var found = document.evaluate( xpath, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE , null );
     
