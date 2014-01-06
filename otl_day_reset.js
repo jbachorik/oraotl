@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name       OTL Day Column Reset
 // @namespace  https://github.com/jbachorik/oraotl
-// @version    0.1
+// @version    0.2
 // @description  Enables clearing the day column in OTL default installation; useful for editing data from template eg. recording a day-off
 // @match      https://global-ebusiness.oraclecorp.com/*
 // @copyright  2012+, You
@@ -12,7 +12,7 @@ String.prototype.trim = function() {
 };
 
 function decorate() {
-  var lblXpath = "//td[@class='x1r']/table/tbody/tr/td[@valign='top']"
+  var lblXpath = "//*[@id='Hxctimecard']/table[1]/tbody/tr/td/table[2]/tbody/tr[5]/td/table/tbody/tr[3]/td/table[1]/tbody/tr[1]/td/table/tbody/tr/td[3]/span"
     
   var found = document.evaluate( lblXpath, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE , null );
 
@@ -39,18 +39,20 @@ function decorate() {
 function resetColumn(evt) {
     var id = evt.srcElement.getAttribute("id")
     
-    var rowXpath = "//span[@id='Hxctimecard']/table[1]/tbody/tr/td/table[2]/tbody/tr[5]/td/table/tbody/tr[3]/td/table[1]/tbody/tr"
-    var colXpath = ".//td[@class='x1n']"
+    var rowXpath = "//*[@id='Hxctimecard']/table[1]/tbody/tr/td/table[2]/tbody/tr[5]/td/table/tbody/tr[3]/td/table[1]/tbody/tr"
+
     var cellXpath = [
-      ".//input[@class='x4']",
-      ".//input[@class='x10']"
+      ".//input[@class='x8']",
+      ".//input[@class='x1u']"
     ].join("|")
         
     var rows = document.evaluate( rowXpath, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE , null )
-        
+    
     for(var i=0;i<rows.snapshotLength;i++) {
+//        console.log(rows.snapshotItem(i))
         var cols = document.evaluate( colXpath, rows.snapshotItem(i), null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null )
         for(var j=0;j<cols.snapshotLength;j++) {
+//            console.log(cols.snapshotItem(j))
             if (id == ("resetCol" + j)) {
                 var cells = document.evaluate( cellXpath, cols.snapshotItem(j), null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null )
                 for(var k=0;k<cells.snapshotLength;k++) {
